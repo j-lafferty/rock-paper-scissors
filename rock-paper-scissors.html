@@ -4,8 +4,64 @@
 <body>
 
     <script>
+        let playerScore = 0;
+        let compScore = 0;
+
+        game();
+
+        function game() {
+            for (i = 1; i < 6; i++) {
+                let playerChoice = playerSelect();
+                let compChoice = computerPlay();
+
+                console.log("Round #" + i);
+                console.log("Player picked " + playerChoice);
+                console.log(playRound(playerChoice, compChoice));
+                console.log("");
+                console.log("Score: Player - " + playerScore + ", Computer - " + compScore);
+                console.log("");
+            }
+            if (playerScore > compScore) {
+                console.log("Congrats! You win! " + playerScore + " to " + compScore);
+            } else if (playerScore < compScore) {
+                console.log("You lose! " + playerScore + " to " + compScore + ". Better luch next time!");
+            } else {
+                console.log("It's a tie! " + playerScore + " to " + compScore);
+            }
+            console.log("");
+            console.log("");
+
+            newGame();
+            
+
+        }
+        function newGame() {
+            let newGameSelect = prompt("Start new game? Type: 'Yes' or 'No'.");
+            let newGameChoice = newGameSelect.toUpperCase();
+            
+            if (newGameChoice === "YES") {
+                console.log("Starting new game.");
+                game();
+            } else if (newGameChoice === "NO") {
+                console.log("Goodbye.");
+            } else {
+                console.log("Invalid selection.");
+                newGame();
+            }
+        }
+
+        function playerSelect() {
+            let playerChoice = prompt("Rock, Paper, or Scissors?").toUpperCase();
+                if (playerChoice === "ROCK" || playerChoice === "PAPER" || playerChoice === "SCISSORS") {
+                    return playerChoice;
+                } else {
+                    console.log("Invalid selection.");
+                    playerSelect();
+                }
+        }
+
         function computerPlay() {
-            var compNum = Math.floor(Math.random() * 3) + 1;
+            let compNum = Math.floor(Math.random() * 3) + 1;
 
             switch (compNum) {
                 case 1:
@@ -21,27 +77,22 @@
         }
 
         function playRound(playerSelection, computerSelection) {
-            var playerText = playerSelection.toUpperCase();
 
-            if (playerText === computerSelection) {
+            if (playerSelection === computerSelection) {
                 return "Tie! Computer picked '" + computerSelection + "'";
-            } else if (playerText === "ROCK" && computerSelection === "PAPER" || playerText === "SCISSORS" && computerSelection === "ROCK") {
+            } else if (playerSelection === "ROCK" && computerSelection === "PAPER" || playerSelection === "SCISSORS" && computerSelection === "ROCK") {
+                compScore += 1;
                 return "You lose! Computer picked '" + computerSelection + "'";
             } else {
+                playerScore += 1;
                 return "You win! Computer picked '" + computerSelection + "'";
             }
           
         }
 
-        const playerSelection = 'rock'
-        const computerSelection = computerPlay()
-        console.log(playRound(playerSelection, computerSelection))
-
-
-        function game() {
-
-        }
-        
+        //const playerSelection = 'rock'
+        //const computerSelection = computerPlay()
+        //console.log(playRound(playerSelection, computerSelection))
 
         
     </script>
