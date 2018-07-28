@@ -1,4 +1,4 @@
-This is a simple text-based "Rock-Paper-Scissorcs" game written in JavaScript within an HTML document.
+This is a simple text-based "Rock-Paper-Scissors" game written in JavaScript within an HTML document.
 
 The game text is displayed in the console.
 
