@@ -37,7 +37,7 @@
 
         function computerPlay() {
 		    return Math.floor(Math.random() * 3);
-	    }
+	    };
         /*
         return message and score after round
         */
@@ -49,7 +49,8 @@
             if (computerSelection == 0 && playerSelection == 2) return {message: "You lose! Rock beats Scissors", player: 0, computer: 1};
             if (computerSelection == 2 && playerSelection == 0) return {message:"You win! Rock beats Scissors", player: 1, computer: 0};
             if (computerSelection == 2 && playerSelection == 1) return {message:"You lose!, Scissors beats Paper", player: 0, computer: 1};
-        }
+
+        };
         /*
             format
                 rock - 0
@@ -60,7 +61,7 @@
             if (playerSelection.toLowerCase() == 'rock') return 0;
             if (playerSelection.toLowerCase() == 'paper') return 1;
             if (playerSelection.toLowerCase() == 'scissors') return 2;
-        }
+        };
         
         var playerWins = 0;
         var computerWins = 0;
@@ -74,8 +75,17 @@
         /*
             button rock, paper, scissors click
         */
+        function removeTransition(e) {
+         if (e.propertyName !== 'transform') return; //skip if it is not a transform
+         this.classList.remove('select');
+         };
+
+        /* btns.forEach(btn => btn.addEventListener('transitionend', removeTransition)); */
+
         btns.forEach(btn => {
             btn.addEventListener('click', function (e) {
+                /* btn.classList.add('select');
+                btn.addEventListener('transitionend', removeTransition); */
                 var result_per_round = playRound(formatPlayerSelection(e.target.id), computerPlay())
                 
                 playerWins += result_per_round.player;
@@ -97,16 +107,16 @@
                     block_buttons.style.display = 'none';
                     block_play_again.style.display = 'block';
                     result.textContent = playerWins > computerWins ? 'YOU WIN !' : 'YOU LOSE !';
-                }
-            })
-        })
+                };
+            });
+        });
         // flag end game
         function endGame (playerWins, computerWins) {
             if (playerWins >= 5 || computerWins >=5) {
                 return true;
-            } 
+            };
             return false;
-        }
+        };
         /*
             click button play again
             show buttons (rock, paper, scissors)
@@ -120,8 +130,8 @@
             computerWins = 0;
             scorePlayer.textContent = 0;
             scoreComputer.textContent = 0;
-        })
-
+        });
+        
         
     </script>
 
