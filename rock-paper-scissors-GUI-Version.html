@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+    </head>
+<body>
+    <div class="game">
+        <h1>Rock, Paper, Scissors</h1>
+        <h3>Try your luck against the computer!</h3>
+        <h3>First one to five wins.</h3>
+    </div>
+
+    <div class="buttons">
+        <div>
+            <button class="button">rock</button>
+        </div>
+        <div>
+            <button class="button">paper</button>
+        </div>
+        <div>
+            <button class="button">scissors</button>
+        </div>
+    </div>
+    <div class="score">
+        <p>Player: </p>
+        <p>Computer: </p>
+    </div>
+
+    <script>
+        let playerScore = 0;
+        let compScore = 0;
+
+        game();
+
+        /* function game() {
+            for (i = 1; i < 6; i++) {
+                let playerChoice = playerSelect();
+                let compChoice = computerPlay();
+
+                console.log("Round #" + i);
+                console.log("Player picked " + playerChoice);
+                console.log(playRound(playerChoice, compChoice));
+                console.log("");
+                console.log("Score: Player - " + playerScore + ", Computer - " + compScore);
+                console.log("");
+            }
+            if (playerScore > compScore) {
+                console.log("Congrats! You win! " + playerScore + " to " + compScore);
+            } else if (playerScore < compScore) {
+                console.log("You lose! " + playerScore + " to " + compScore + ". Better luch next time!");
+            } else {
+                console.log("It's a tie! " + playerScore + " to " + compScore);
+            }
+            console.log("");
+            console.log("");
+
+            newGame();
+            
+
+        } */
+
+        /* function newGame() {
+            let newGameSelect = prompt("Start new game? Type: 'Yes' or 'No'.");
+            let newGameChoice = newGameSelect.toUpperCase();
+            
+            if (newGameChoice === "YES") {
+                console.log("Starting new game.");
+                game();
+            } else if (newGameChoice === "NO") {
+                console.log("Goodbye.");
+            } else {
+                console.log("Invalid selection.");
+                newGame();
+            }
+        } */
+
+        function playerSelect() {
+            let playerChoice = prompt("Rock, Paper, or Scissors?").toUpperCase();
+                if (playerChoice === "ROCK" || playerChoice === "PAPER" || playerChoice === "SCISSORS") {
+                    return playerChoice;
+                } else {
+                    console.log("Invalid selection.");
+                    playerSelect();
+                }
+        }
+
+        function computerPlay() {
+            let compNum = Math.floor(Math.random() * 3) + 1;
+
+            switch (compNum) {
+                case 1:
+                    return "ROCK";
+                    break;
+                case 2:
+                    return "PAPER";
+                    break;
+                case 3:
+                    return "SCISSORS";
+                    break;
+            }
+        }
+
+        function playRound(playerSelection, computerSelection) {
+
+            if (playerSelection === computerSelection) {
+                return "Tie! Computer picked '" + computerSelection + "'";
+            } else if (playerSelection === "ROCK" && computerSelection === "PAPER" || playerSelection === "SCISSORS" && computerSelection === "ROCK") {
+                compScore += 1;
+                return "You lose! Computer picked '" + computerSelection + "'";
+            } else {
+                playerScore += 1;
+                return "You win! Computer picked '" + computerSelection + "'";
+            }
+          
+        }
+
+        function removeTransition(e) {
+            if (e.propertyName !== 'transform') return; //skip if it is not a transform
+            this.classList.remove('playing');
+        };
+
+        const buttons = document.querySelectorAll('.button');
+        buttons.forEach(button => button.addEventListener('transitionend', removeTransition));
+        window.addEventListener('click', playRound);
+        
+    </script>
+
+</body>
+</html>
