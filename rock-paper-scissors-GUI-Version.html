@@ -7,122 +7,121 @@
 <body>
     <div class="game">
         <h1>Rock, Paper, Scissors</h1>
-        <h3>Try your luck against the computer!</h3>
-        <h3>First one to five wins.</h3>
+        <div class="result">
+            <h3>Try your luck against the computer! First one to five wins.</h3>
+        </div>
     </div>
 
     <div class="buttons">
         <div>
-            <button class="button">rock</button>
+            <button id="rock" class="btn">rock</button>
         </div>
         <div>
-            <button class="button">paper</button>
+            <button id="paper" class="btn">paper</button>
         </div>
         <div>
-            <button class="button">scissors</button>
+            <button id="scissors" class="btn">scissors</button>
         </div>
     </div>
+    <div class="play-again">
+            <div class="buttons">
+                <button id="none" class="btn">Play again!</button>
+            </div>
+    </div>
     <div class="score">
-        <p>Player: </p>
-        <p>Computer: </p>
+        <p>Player: <span class="player">0</span></p>
+        <p>Computer: <span class="computer">0</span></p>
     </div>
 
     <script>
-        let playerScore = 0;
-        let compScore = 0;
-
-        game();
-
-        /* function game() {
-            for (i = 1; i < 6; i++) {
-                let playerChoice = playerSelect();
-                let compChoice = computerPlay();
-
-                console.log("Round #" + i);
-                console.log("Player picked " + playerChoice);
-                console.log(playRound(playerChoice, compChoice));
-                console.log("");
-                console.log("Score: Player - " + playerScore + ", Computer - " + compScore);
-                console.log("");
-            }
-            if (playerScore > compScore) {
-                console.log("Congrats! You win! " + playerScore + " to " + compScore);
-            } else if (playerScore < compScore) {
-                console.log("You lose! " + playerScore + " to " + compScore + ". Better luch next time!");
-            } else {
-                console.log("It's a tie! " + playerScore + " to " + compScore);
-            }
-            console.log("");
-            console.log("");
-
-            newGame();
-            
-
-        } */
-
-        /* function newGame() {
-            let newGameSelect = prompt("Start new game? Type: 'Yes' or 'No'.");
-            let newGameChoice = newGameSelect.toUpperCase();
-            
-            if (newGameChoice === "YES") {
-                console.log("Starting new game.");
-                game();
-            } else if (newGameChoice === "NO") {
-                console.log("Goodbye.");
-            } else {
-                console.log("Invalid selection.");
-                newGame();
-            }
-        } */
-
-        function playerSelect() {
-            let playerChoice = prompt("Rock, Paper, or Scissors?").toUpperCase();
-                if (playerChoice === "ROCK" || playerChoice === "PAPER" || playerChoice === "SCISSORS") {
-                    return playerChoice;
-                } else {
-                    console.log("Invalid selection.");
-                    playerSelect();
-                }
-        }
 
         function computerPlay() {
-            let compNum = Math.floor(Math.random() * 3) + 1;
-
-            switch (compNum) {
-                case 1:
-                    return "ROCK";
-                    break;
-                case 2:
-                    return "PAPER";
-                    break;
-                case 3:
-                    return "SCISSORS";
-                    break;
-            }
-        }
-
+		    return Math.floor(Math.random() * 3);
+	    }
+        /*
+        return message and score after round
+        */
         function playRound(playerSelection, computerSelection) {
-
-            if (playerSelection === computerSelection) {
-                return "Tie! Computer picked '" + computerSelection + "'";
-            } else if (playerSelection === "ROCK" && computerSelection === "PAPER" || playerSelection === "SCISSORS" && computerSelection === "ROCK") {
-                compScore += 1;
-                return "You lose! Computer picked '" + computerSelection + "'";
-            } else {
-                playerScore += 1;
-                return "You win! Computer picked '" + computerSelection + "'";
-            }
-          
+            if (computerSelection == 1 && playerSelection == 0) return {message: "You lose! Paper beats Rock", player: 0, computer: 1};
+            if (computerSelection == playerSelection) return {message: "it's a draw!", player: 0, computer: 0};
+            if (computerSelection == 1 && playerSelection == 2) return {message:"You win! Scissors beats Paper", player: 1, computer: 0};
+            if (computerSelection == 0 && playerSelection == 1) return {message: "You win! Paper beats Rock", player: 1, computer: 0};
+            if (computerSelection == 0 && playerSelection == 2) return {message: "You lose! Rock beats Scissors", player: 0, computer: 1};
+            if (computerSelection == 2 && playerSelection == 0) return {message:"You win! Rock beats Scissors", player: 1, computer: 0};
+            if (computerSelection == 2 && playerSelection == 1) return {message:"You lose!, Scissors beats Paper", player: 0, computer: 1};
         }
+        /*
+            format
+                rock - 0
+                paper - 1
+                scissors - 2
+        */
+        function formatPlayerSelection (playerSelection) {
+            if (playerSelection.toLowerCase() == 'rock') return 0;
+            if (playerSelection.toLowerCase() == 'paper') return 1;
+            if (playerSelection.toLowerCase() == 'scissors') return 2;
+        }
+        
+        var playerWins = 0;
+        var computerWins = 0;
+        var result = document.querySelector('.result');
+        var btns = document.querySelectorAll('.buttons  .btn');
+        var scorePlayer = document.querySelector('.score .player');
+        var scoreComputer = document.querySelector('.score .computer');
+        var block_buttons = document.querySelector('.buttons');
+        var block_play_again = document.querySelector('.play-again');
+        var button_play_again = document.querySelector('.play-again .btn');
+        /*
+            button rock, paper, scissors click
+        */
+        btns.forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                var result_per_round = playRound(formatPlayerSelection(e.target.id), computerPlay())
+                
+                playerWins += result_per_round.player;
+                computerWins += result_per_round.computer;
+                scorePlayer.textContent = playerWins;
+                scoreComputer.textContent = computerWins;
+                if (!endGame(playerWins, computerWins)) {
+                    /*
+                        show result message per round
+                    */
+                    result.textContent = result_per_round.message;
+                    
+                } else {
+                    /*
+                        end game
+                        show button play again
+                        show message who win (player win or lose)
+                    */
+                    block_buttons.style.display = 'none';
+                    block_play_again.style.display = 'block';
+                    result.textContent = playerWins > computerWins ? 'YOU WIN !' : 'YOU LOSE !';
+                }
+            })
+        })
+        // flag end game
+        function endGame (playerWins, computerWins) {
+            if (playerWins >= 5 || computerWins >=5) {
+                return true;
+            } 
+            return false;
+        }
+        /*
+            click button play again
+            show buttons (rock, paper, scissors)
+            reset score 
+        */
+        button_play_again.addEventListener('click', function (e) {
+            block_buttons.style.display = 'flex';
+            block_play_again.style.display = 'none';
+            result.textContent = 'Try your luck against the computer! First one to five wins.'
+            playerWins = 0;
+            computerWins = 0;
+            scorePlayer.textContent = 0;
+            scoreComputer.textContent = 0;
+        })
 
-        function removeTransition(e) {
-            if (e.propertyName !== 'transform') return; //skip if it is not a transform
-            this.classList.remove('playing');
-        };
-
-        const buttons = document.querySelectorAll('.button');
-        buttons.forEach(button => button.addEventListener('transitionend', removeTransition));
-        window.addEventListener('click', playRound);
         
     </script>
 
